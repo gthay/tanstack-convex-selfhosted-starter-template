@@ -24,8 +24,8 @@ A starter template for building full-stack React applications with [TanStack Sta
 
 1. **Clone or use this template:**
    ```bash
-   git clone <your-repo-url>
-   cd tanstack-convex-starter-template
+   git clone https://github.com/gthay/tanstack-convex-selfhosted-starter-template.git
+   cd tanstack-convex-selfhosted-starter-template
    ```
 
 2. **Install dependencies:**
@@ -37,7 +37,8 @@ A starter template for building full-stack React applications with [TanStack Sta
    ```bash
    npx convex dev
    ```
-   
+   1. Select "New Project"
+   2. Select "local deployment"
    This will:
    - Create a new Convex project (if you don't have one)
    - Generate your deployment URL
@@ -45,12 +46,7 @@ A starter template for building full-stack React applications with [TanStack Sta
 
 4. **Configure environment variables:**
    
-   Create a `.env` file in the root directory:
-   ```bash
-   VITE_CONVEX_URL=your-convex-deployment-url
-   ```
-   
-   You can find your deployment URL in the Convex dashboard or in the output from `npx convex dev`.
+   --
 
 5. **Start the development server:**
    ```bash
@@ -66,6 +62,59 @@ A starter template for building full-stack React applications with [TanStack Sta
    
    Navigate to [http://localhost:3000](http://localhost:3000)
 
+
+## Deploy to Dokploy
+
+1. Create your Github Repo
+Push the repo into your own Github Repository
+2. Setup Dokploy Server
+Setup a Dokploy Server and secure it etc.
+3. Create Project 
+Create a Project in Dokploy.
+4. Create Backend Service
+Select Create compose and give it a name e.G. "Convex"
+5. Connect Github Repo
+Connect your Github Repository. Select main branch and press save
+6. Set Domains
+Open Tab "Domains" and add the following 3:
+- Backend:
+   - Service Name: select backend in dropdown
+   - Host: use button for for a traefik Domain or create a subdomain e.G db.example.com
+   - Container Port: 3210
+   - HTTPS: On and select "Let's Encrypt"
+- Dashboard:
+   - Service Name: dashboard
+   - Host: use button for for a traefik Domain or create a subdomain e.G db-panel.example.com
+   - Container Port: 6791
+   - HTTPS: On and select "Let's Encrypt"
+- Backend2:
+   - Service Name: backend
+   - Host: use button for for a traefik Domain or create a subdomain e.G db2.example.com
+   - Container Port: 3211
+   - HTTPS: On and select "Let's Encrypt"
+7. Set env 
+Then go to "Environment" Tab and make it visible. In there paste:
+```bash
+   CONVEX_CLOUD_ORIGIN=https://convex-db.example.com
+   CONVEX_SITE_ORIGIN=http://convex-convex-1wqleh-7f7f4e-49-13-80-89.traefik.me
+   POSTGRES_PASSWORD=your_secure_password_123
+   INSTANCE_NAME=convex
+   INSTANCE_SECRET=bf52d4564c2bad0499fccaa563c3cd5f3d
+   POSTGRES_USER=convex
+   POSTGRES_DB=convex
+   CONVEX_BACKEND_PORT=3210
+   CONVEX_SITE_PORT=3211
+   DASHBOARD_PORT=6791
+   RUST_LOG=info
+   DISABLE_BEACON=true
+   ```
+   Then edit the following: 
+   - POSTGRES_PASSWORD -> Change to a secure password (can only change before the first deployment)
+   - INSTANCE_SECRET -> Execute the following in any Terminal and use it as a secret:
+   openssl rand -hex 32
+   Then go back to tab "General" and press "deploy" wait until it's done (green)
+   - CONVEX_CLOUD_ORIGIN -> Use Domain from earlier on port 3210 (db.example.com)
+   - CONVEX_SITE_ORIGIN -> Use Domain from earlier on port 3211 (db2.example.com)
 ## Project Structure
 
 ```

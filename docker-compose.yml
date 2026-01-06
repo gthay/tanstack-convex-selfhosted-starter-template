@@ -26,7 +26,7 @@ services:
     environment:
       INSTANCE_NAME: ${INSTANCE_NAME:?INSTANCE_NAME is required}
       INSTANCE_SECRET: ${INSTANCE_SECRET:?INSTANCE_SECRET is required}
-      POSTGRES_URL: "postgres://${POSTGRES_USER:-convex}:${POSTGRES_PASSWORD}@postgres:5432"
+      POSTGRES_URL: "postgres://${POSTGRES_USER:-convex}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-convex}"
       DO_NOT_REQUIRE_SSL: "1"
       CONVEX_CLOUD_ORIGIN: ${CONVEX_CLOUD_ORIGIN:?CONVEX_CLOUD_ORIGIN is required}
       CONVEX_SITE_ORIGIN: ${CONVEX_SITE_ORIGIN:?CONVEX_SITE_ORIGIN is required}
